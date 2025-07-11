@@ -14,11 +14,10 @@ permissions:
   pages: write
   id-token: write
 
-# 只允许一个并发部署，跳过在进行中的任务之间排队的运行。
-# 但是，不要取消进行中的运行，因为我们希望允许每个推送的部署完成。
+# 只允许一个并发部署
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   # 构建任务
@@ -26,22 +25,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4 # <-- 版本已更新
+        uses: actions/checkout@v4
         with:
           ref: v0
       - name: Setup Node
-        uses: actions/setup-node@v4 # <-- 版本已更新
+        uses: actions/setup-node@v4
         with:
           node-version: 16
           cache: 'npm'
       - name: Install dependencies
         run: npm install
       - name: Build with VitePress
-        run: npm run docs:build
+        # 这里是关键的修改！
+        run: npm run build
       - name: Setup Pages
-        uses: actions/configure-pages@v5 # <-- 版本已更新
+        uses: actions/configure-pages@v5
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3 # <-- 版本已更新
+        uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
 
@@ -55,4 +55,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # <-- 版本已更新
+        uses: actions/deploy-pages@v4
