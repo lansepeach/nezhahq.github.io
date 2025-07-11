@@ -1,6 +1,10 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  // ↓↓↓↓↓↓  就是在这里添加了这一行！ ↓↓↓↓↓↓
+  base: '/nezhahq.github.io/',
+  // ↑↑↑↑↑↑  就是在这里添加了这一行！ ↑↑↑↑↑↑
+
   lastUpdated: true,
   lang: 'zh-CN',
   head: [
